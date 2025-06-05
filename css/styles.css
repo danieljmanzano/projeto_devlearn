@@ -1,0 +1,57 @@
+h1 {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.5em;
+    color: #4CAF50;
+    margin: 1rem 0;
+    text-align: center;
+    width: 100%; 
+}
+
+body {
+    /* esse bloco aqui é pra deixar a imagem do rony de fundo da página. tirar depois, to fazendo de sacanagem */
+    background-image: url('../img/rony_feio.jpeg');
+    background-repeat: no-repeat; /* evita repetir a imagem */
+    background-size: cover; /* ajusta para cobrir toda a área */
+    background-position: center center; /* centraliza a imagem */
+    background-color: rgba(255, 255, 255, 0.8); /* fundo transparente */
+    
+    /* coisas importantes de verdade */
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+}
+
+#cronometro {
+    font-size: 4em;
+    color: #4CAF50;
+    margin-bottom: 1rem;
+}
+
+#configuracoes {
+    display: none;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+#rony {
+    display: block;
+    margin: 1rem auto 0 auto;
+    width: 800px;
+    height: 200px;
+}
