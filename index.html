@@ -18,6 +18,9 @@
         <div id="principal">
             <div id="cronometro">25:00</div>
 
+            <div id="pomodoros">Pomodoros concluídos: 0</div>
+            <div id="mensagem-modo">Hora de focar!</div>
+
             <button id="inicia-pausa">Iniciar</button>
                 
             <!--conjunto de botões interativos para selecionar o modo do cronômetro-->
@@ -40,8 +43,13 @@
 
             <label for="pausa-longa">Pausa Longa (minutos):</label>
             <input type="number" id="pausa-longa" value="15" min="1" max="60">
+            
+            <div id="botoes-config">
+                <button id="aplicar-config">Aplicar Configurações</button>
+                <button id="reiniciar-config">Reinciar Configurações</button>
+            </div>
 
-            <img src="img/rony.jpg" alt="Rony" id="rony">
+            <img src="img/rony.jpg" alt="Rony" id="rony"> <!--tirar isso aqui depois-->
         </section>
 
         <!--botão para "ativar" as configurações-->
