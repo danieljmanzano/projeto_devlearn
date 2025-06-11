@@ -19,6 +19,10 @@ let segundos = 0;
 let isRunning = false;
 let modoAtual = 'pomodoro';
 let pomodorosConcluidos = 0;
+let tempoPomodoro = 25; 
+let tempoPausaCurta = 5;
+let tempoPausaLonga = 15;
+
 
 // Configuração inicial dos inputs
 trocaModo.addEventListener('click', () => { // caso o botão seja clicado, a exibição de configurações ou o cronômetro será alternada
@@ -35,24 +39,11 @@ trocaModo.addEventListener('click', () => { // caso o botão seja clicado, a exi
 
 // Salvar configurações
 function salvarConfiguracoes() {
-    localStorage.setItem('pomodoroTime', inputPomodoro.value);
-    localStorage.setItem('shortBreakTime', inputPausaCurta.value);
-    localStorage.setItem('longBreakTime', inputPausaLonga.value);
+    localStorage.setItem('pomodoroTime', tempoPomodoro);
+    localStorage.setItem('shortBreakTime', tempoPausaCurta);
+    localStorage.setItem('longBreakTime', tempoPausaLonga);
 }
 
-// Carregar configurações
-function carregarConfiguracoes() {
-    const pomodoroTime = localStorage.getItem('pomodoroTime') || 25;
-    const shortBreakTime = localStorage.getItem('shortBreakTime') || 5;
-    const longBreakTime = localStorage.getItem('longBreakTime') || 15;
-    
-    inputPomodoro.value = pomodoroTime;
-    inputPausaCurta.value = shortBreakTime;
-    inputPausaLonga.value = longBreakTime;
-}
-
-// Carregar configurações quando a página carrega
-document.addEventListener('DOMContentLoaded', carregarConfiguracoes);
 
 // Função para atualizar o display
 function atualizaDisplay() {
@@ -100,13 +91,13 @@ function iniciarModo(modo) {
 
     switch(modo) {
         case 'pomodoro':
-            minutos = parseInt(inputPomodoro.value);
+            minutos = tempoPomodoro;
             break;
         case 'pausa-curta':
-            minutos = parseInt(inputPausaCurta.value);
+            minutos = tempoPausaCurta;
             break;
         case 'pausa-longa':
-            minutos = parseInt(inputPausaLonga.value);
+            minutos = tempoPausaLonga;
             break;
     }
 
@@ -116,19 +107,19 @@ function iniciarModo(modo) {
     clearInterval(timer); // Limpa o timer anterior, se houver
     tick(); 
 
-    timer = setInterval(tick, 1000);
+    timer = setInterval(tick, 100);
     isRunning = true;
     botaoIniciaPausa.textContent = 'Pausar';
 }
 
 // Evento do botão Iniciar/Pausar
 botaoIniciaPausa.addEventListener('click', () => {
-    if (isRunning) {
+    if (isRunning) { // pausa
         clearInterval(timer);
         isRunning = false;
         botaoIniciaPausa.textContent = 'Iniciar';
-    } else {
-        timer = setInterval(tick, 1000);
+    } else { // inicia
+        timer = setInterval(tick, 100);
         isRunning = true;
         botaoIniciaPausa.textContent = 'Pausar';
     }
@@ -147,13 +138,13 @@ botoesModo.forEach(botao => {
         // Definir tempos baseado no modo
         switch(modoAtual) {
             case 'pomodoro':
-                minutos = parseInt(inputPomodoro.value) || 25; 
+                minutos = tempoPomodoro; 
                 break;
             case 'pausa-curta':
-                minutos = parseInt(inputPausaCurta.value) || 5;
+                minutos = tempoPausaCurta;
                 break;
             case 'pausa-longa':
-                minutos = parseInt(inputPausaLonga.value) || 15;
+                minutos = tempoPausaLonga;
                 break;
         }
         segundos = 0;
@@ -163,26 +154,39 @@ botoesModo.forEach(botao => {
 
 // Evento para aplicar configurações
 botaoAplicarConfig.addEventListener('click', () => {
-    salvarConfiguracoes(); // salva no localStorage
+    tempoPomodoro = parseInt(inputPomodoro.value) || 25;
+    tempoPausaCurta = parseInt(inputPausaCurta.value) || 5;
+    tempoPausaLonga = parseInt(inputPausaLonga.value) || 15;
 
-    // Atualiza o tempo baseado no modo atual
-    switch(modoAtual) {
+    salvarConfiguracoes();
+
+    switch (modoAtual) {
         case 'pomodoro':
-            minutos = parseInt(inputPomodoro.value) || 25;
+            minutos = tempoPomodoro;
             break;
         case 'pausa-curta':
-            minutos = parseInt(inputPausaCurta.value) || 5;
+            minutos = tempoPausaCurta;
             break;
         case 'pausa-longa':
-            minutos = parseInt(inputPausaLonga.value) || 15;
+            minutos = tempoPausaLonga;
             break;
     }
 
     segundos = 0;
     atualizaDisplay();
 
-    
+
+    // Esconder configurações e voltar ao cronômetro
+    configSection.style.display = 'none';
+    principal.style.display = 'block';
+    trocaModo.textContent = 'Mostrar Configurações';
+
+    // Pausa o cronômetro
+    clearInterval(timer);
+    isRunning = false;
+    botaoIniciaPausa.textContent = 'Iniciar';
 });
+
 
 // Evento para reiniciar configurações (descarta valores do usuário e volta aos valores padrões iniciais)
 botaoReiniciarConfig.addEventListener('click', () => {
@@ -190,6 +194,10 @@ botaoReiniciarConfig.addEventListener('click', () => {
     inputPomodoro.value = 25;
     inputPausaCurta.value = 5;
     inputPausaLonga.value = 15;
+    tempoPomodoro = 25;
+    tempoPausaCurta = 5;
+    tempoPausaLonga = 15;
+    pomodorosConcluidos = 0;
 
     // Salvar no localStorage
     salvarConfiguracoes();
@@ -208,7 +216,18 @@ botaoReiniciarConfig.addEventListener('click', () => {
     }
 
     segundos = 0;
+    atualizaPomodoros();
     atualizaDisplay();
+
+    // Esconder configurações e voltar ao cronômetro
+    configSection.style.display = 'none';
+    principal.style.display = 'block';
+    trocaModo.textContent = 'Mostrar Configurações';
+
+    // Pausa o cronômetro
+    clearInterval(timer);
+    isRunning = false;
+    botaoIniciaPausa.textContent = 'Iniciar';
 });
 
 // Atualiza o texto de ciclos

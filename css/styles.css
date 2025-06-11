@@ -16,7 +16,6 @@ body {
     background-repeat: no-repeat; /* evita repetir a imagem */
     background-size: cover; /* ajusta para cobrir toda a área */
     background-position: center center; /* centraliza a imagem */
-    background-color: rgba(255, 255, 255, 0.8); /* fundo transparente */
     
     /* coisas importantes de verdade */
     font-family: Arial, Helvetica, sans-serif;
@@ -37,10 +36,24 @@ main {
     width: 100%;
 }
 
+#cronometro-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    font-size: 1rem;
+    margin: 0 auto 1rem auto;
+    border-radius: 10px;
+    max-width: 500px;
+    background-color: rgba(0, 0, 0, 0.1); /* levemente transparente */
+    position: sticky; 
+    top: 0;
+}
+
 #cronometro {
-    font-size: 4em;
+    font-size: 5em;
     color: #4CAF50;
-    margin-bottom: 1rem;
 }
 
 #configuracoes {
@@ -53,17 +66,15 @@ main {
     display: block;
     margin: 1rem auto 0 auto;
     width: 800px;
-    height: 200px;
+    height: 150px;
 }
-
-
 
 
 button {
     background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 1rem;
     margin: 0.5rem;
     border-radius: 5px;
     font-size: 1rem;
