@@ -1,14 +1,14 @@
 h1 {
-    position: fixed;
+    position: relative;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
     font-size: 2.5em;
     color: #4CAF50;
     margin: 1rem 0;
     text-align: center;
     width: 100%; 
+    margin-bottom: 1rem;
 }
+
 
 body {
     /* esse bloco aqui é pra deixar a imagem do rony de fundo da página. tirar depois, to fazendo de sacanagem */
@@ -24,17 +24,20 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
+
 
 main {
     background: #fff;
     padding: 2rem;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px 3px rgba(0,0,0,0.1);
     text-align: center;
     max-width: 800px;
     width: 100%;
 }
+
 
 #cronometro-container {
     display: flex;
@@ -51,16 +54,25 @@ main {
     top: 0;
 }
 
+
 #cronometro {
     font-size: 5em;
     color: #4CAF50;
 }
+
 
 #configuracoes {
     display: none;
     margin-top: 1rem;
     text-align: center;
 }
+
+
+#inicia-pausa i {
+    font-size: 1.5em;
+    width: 50px;
+}
+
 
 #rony {
     display: block;
@@ -82,9 +94,11 @@ button {
     transition: background-color 0.3s;
 }
 
+
 button:hover {
     background-color: #45a049;
 }
+
 
 #botoes {
     display: flex;
@@ -93,10 +107,12 @@ button:hover {
     margin: 1rem 0;
 }
 
+
 #botoes button {
     flex: 1;
     max-width: 120px;
 }
+
 
 #configuracoes {
     display: none;
@@ -104,10 +120,12 @@ button:hover {
     text-align: center;
 }
 
+
 #configuracoes label {
     display: block;
     margin: 0.5rem 0 0.2rem;
 }
+
 
 #configuracoes input {
     width: 60px;
@@ -118,6 +136,7 @@ button:hover {
     text-align: center;
 }
 
+
 #botoes-config {
     display: flex;
     flex-direction: row;
@@ -127,16 +146,18 @@ button:hover {
     margin: 1rem 0;
 }
 
+
 #mostra-config {
     margin-top: 1rem;
     background-color: #607d8b;
 }
 
+
 #mostra-config:hover {
     background-color: #546e7a;
 }
 
-/* Estilo para o modo ativo */
+
 .botao.ativo {
     background-color: #2E7D32;
 }

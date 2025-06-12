@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="js/script.js" defer></script>
 </head>
 
@@ -24,7 +25,8 @@
             <div id="pomodoros">Pomodoros concluídos: 0</div>
             <div id="mensagem-modo">Hora de focar!</div>
 
-            <button id="inicia-pausa">Iniciar</button>
+            <!--botão de inicia/pausa associado a um ícone-->
+            <button id="inicia-pausa"><i class="fas fa-play"></i></button>
                 
             <!--conjunto de botões interativos para selecionar o modo do cronômetro-->
             <div id="botoes">
@@ -47,6 +49,7 @@
             <label for="pausa-longa">Pausa Longa (minutos):</label>
             <input type="number" id="pausa-longa" value="15" min="1" max="60">
             
+            <!--botões de aplicar/reiniciar configurações-->
             <div id="botoes-config">
                 <button id="aplicar-config">Aplicar Configurações</button>
                 <button id="reiniciar-config">Reinciar Configurações</button>
@@ -57,8 +60,6 @@
 
         <!--botão para "ativar" as configurações-->
         <button id="mostra-config">Mostrar Configurações</button>
-
-        
 
     </main>
 

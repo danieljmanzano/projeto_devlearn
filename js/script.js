@@ -1,5 +1,4 @@
 // Elementos DOM
-
 const trocaModo = document.getElementById('mostra-config');
 const configSection = document.getElementById('configuracoes');
 const principal = document.getElementById('principal');
@@ -11,6 +10,8 @@ const inputPausaCurta = document.getElementById('pausa-curta');
 const inputPausaLonga = document.getElementById('pausa-longa');
 const botaoAplicarConfig = document.getElementById('aplicar-config');
 const botaoReiniciarConfig = document.getElementById('reiniciar-config');
+const icone = botaoIniciaPausa.querySelector("i");
+
 
 // Variáveis globais
 let timer;
@@ -37,6 +38,7 @@ trocaModo.addEventListener('click', () => { // caso o botão seja clicado, a exi
     }
 });
 
+
 // Salvar configurações
 function salvarConfiguracoes() {
     localStorage.setItem('pomodoroTime', tempoPomodoro);
@@ -50,6 +52,7 @@ function atualizaDisplay() {
     cronometro.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
     atualizaMensagemModo(); 
 }
+
 
 // Função principal do timer
 function tick() {
@@ -85,6 +88,7 @@ function tick() {
     atualizaDisplay();
 }
 
+
 // Função para iniciar o modo selecionado
 function iniciarModo(modo) {
     modoAtual = modo;
@@ -109,21 +113,23 @@ function iniciarModo(modo) {
 
     timer = setInterval(tick, 100);
     isRunning = true;
-    botaoIniciaPausa.textContent = 'Pausar';
+    atualizarBotaoPausaPlay(isRunning);
 }
+
 
 // Evento do botão Iniciar/Pausar
 botaoIniciaPausa.addEventListener('click', () => {
     if (isRunning) { // pausa
         clearInterval(timer);
         isRunning = false;
-        botaoIniciaPausa.textContent = 'Iniciar';
+        atualizarBotaoPausaPlay(isRunning);
     } else { // inicia
         timer = setInterval(tick, 100);
         isRunning = true;
-        botaoIniciaPausa.textContent = 'Pausar';
+        atualizarBotaoPausaPlay(isRunning);
     }
 });
+
 
 // Eventos para os botões de modo
 botoesModo.forEach(botao => {
@@ -133,7 +139,7 @@ botoesModo.forEach(botao => {
         // Resetar timer
         clearInterval(timer);
         isRunning = false;
-        botaoIniciaPausa.textContent = 'Iniciar';
+        atualizarBotaoPausaPlay(isRunning);
         
         // Definir tempos baseado no modo
         switch(modoAtual) {
@@ -151,6 +157,7 @@ botoesModo.forEach(botao => {
         atualizaDisplay();
     });
 });
+
 
 // Evento para aplicar configurações
 botaoAplicarConfig.addEventListener('click', () => {
@@ -184,7 +191,7 @@ botaoAplicarConfig.addEventListener('click', () => {
     // Pausa o cronômetro
     clearInterval(timer);
     isRunning = false;
-    botaoIniciaPausa.textContent = 'Iniciar';
+    atualizarBotaoPausaPlay(isRunning);
 });
 
 
@@ -227,8 +234,9 @@ botaoReiniciarConfig.addEventListener('click', () => {
     // Pausa o cronômetro
     clearInterval(timer);
     isRunning = false;
-    botaoIniciaPausa.textContent = 'Iniciar';
+    atualizarBotaoPausaPlay(isRunning);
 });
+
 
 // Atualiza o texto de ciclos
 function atualizaPomodoros() {
@@ -238,6 +246,7 @@ function atualizaPomodoros() {
         pomodorosConcluidos = 0;
     }
 }
+
 
 // Atualiza o texto do modo atual
 function atualizaMensagemModo() {
@@ -254,6 +263,19 @@ function atualizaMensagemModo() {
             break;
     }
 }
+
+
+// Atualiza o ícone do botão de pausa/play
+function atualizarBotaoPausaPlay(emExecucao) {
+    if (emExecucao) {
+        icone.classList.remove("fa-play");
+        icone.classList.add("fa-pause");
+    } else {
+        icone.classList.remove("fa-pause");
+        icone.classList.add("fa-play");
+    }
+}
+
 
 // Inicializar display
 atualizaDisplay();
