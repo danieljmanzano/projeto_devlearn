@@ -23,16 +23,22 @@
 
         <div id="principal">
             <div id="pomodoros">Pomodoros concluídos: 0</div>
-            <div id="mensagem-modo">Hora de focar!</div>
+            <div id="mensagem-modo">Hora de focar!</div><br>
 
             <!--botão de inicia/pausa associado a um ícone-->
             <button id="inicia-pausa"><i class="fas fa-play"></i></button>
                 
             <!--conjunto de botões interativos para selecionar o modo do cronômetro-->
-            <div id="botoes">
-                <button class="botao" data-mode="pomodoro">Pomodoro</button>
-                <button class="botao" data-mode="pausa-curta">Pausa Curta</button>
-                <button class="botao" data-mode="pausa-longa">Pausa Longa</button>
+            <div class="mode-selector" id="botoes">
+                    <button class="botao" data-mode="pomodoro">
+                        <i class="fas fa-clock"></i> Pomodoro
+                    </button>
+                    <button class="botao" data-mode="pausa-curta">
+                        <i class="fas fa-coffee"></i> Pausa Curta
+                    </button>
+                    <button class="botao" data-mode="pausa-longa">
+                        <i class="fas fa-couch"></i> Pausa Longa
+                    </button>
             </div>
         </div>
 
@@ -55,7 +61,6 @@
                 <button id="reiniciar-config">Reinciar Configurações</button>
             </div>
 
-           <img src="img/rony.jpg" alt="Rony" id="rony"> <!--tirar isso aqui depois-->
         </section>
 
         <!--botão para "ativar" as configurações-->

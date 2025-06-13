@@ -274,6 +274,7 @@ function atualizarBotaoPausaPlay(emExecucao) {
         icone.classList.remove("fa-pause");
         icone.classList.add("fa-play");
     }
+    
 }
 
 

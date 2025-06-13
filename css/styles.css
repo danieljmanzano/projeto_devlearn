@@ -11,13 +11,7 @@ h1 {
 
 
 body {
-    /* esse bloco aqui é pra deixar a imagem do rony de fundo da página. tirar depois, to fazendo de sacanagem */
-    background-image: url('../img/rony_feio.jpeg');
-    background-repeat: no-repeat; /* evita repetir a imagem */
-    background-size: cover; /* ajusta para cobrir toda a área */
-    background-position: center center; /* centraliza a imagem */
-    
-    /* coisas importantes de verdade */
+    background: #e1e1e1; 
     font-family: Arial, Helvetica, sans-serif;
     color: #333;
     height: 100vh;
@@ -25,6 +19,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin: 0; /* Remove margens padrão */
 }
 
 
@@ -49,15 +44,19 @@ main {
     margin: 0 auto 1rem auto;
     border-radius: 10px;
     max-width: 500px;
-    background-color: rgba(0, 0, 0, 0.1); /* levemente transparente */
+    background-color: rgba(0, 0, 0, 0);
     position: sticky; 
     top: 0;
 }
 
 
 #cronometro {
-    font-size: 5em;
-    color: #4CAF50;
+    font-family: 'Courier New', monospace;
+    font-size: 8em;        
+    color: #4CAF50;            
+    font-weight: bold;         
+    margin: 0.5rem 0;   
+
 }
 
 
@@ -88,7 +87,7 @@ button {
     border: none;
     padding: 1rem 1rem;
     margin: 0.5rem;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -98,6 +97,7 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
 
 
 #botoes {
@@ -154,10 +154,20 @@ button:hover {
 
 
 #mostra-config:hover {
-    background-color: #546e7a;
+    background-color: #607d8b;
 }
 
 
 .botao.ativo {
     background-color: #2E7D32;
+}
+
+.botao i {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.botao {
+    white-space: nowrap;
+    word-break: keep-all;
 }
