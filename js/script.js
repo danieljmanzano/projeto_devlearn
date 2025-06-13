@@ -12,7 +12,6 @@ const botaoAplicarConfig = document.getElementById('aplicar-config');
 const botaoReiniciarConfig = document.getElementById('reiniciar-config');
 const icone = botaoIniciaPausa.querySelector("i");
 
-
 // Variáveis globais
 let timer;
 let minutos = 25;
@@ -23,7 +22,7 @@ let pomodorosConcluidos = 0;
 let tempoPomodoro = 25; 
 let tempoPausaCurta = 5;
 let tempoPausaLonga = 15;
-
+let tempoFim = null;
 
 // Configuração inicial dos inputs
 trocaModo.addEventListener('click', () => { // caso o botão seja clicado, a exibição de configurações ou o cronômetro será alternada
@@ -38,7 +37,6 @@ trocaModo.addEventListener('click', () => { // caso o botão seja clicado, a exi
     }
 });
 
-
 // Salvar configurações
 function salvarConfiguracoes() {
     localStorage.setItem('pomodoroTime', tempoPomodoro);
@@ -46,53 +44,59 @@ function salvarConfiguracoes() {
     localStorage.setItem('longBreakTime', tempoPausaLonga);
 }
 
-
 // Função para atualizar o display
 function atualizaDisplay() {
     cronometro.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
     atualizaMensagemModo(); 
 }
 
-
 // Função principal do timer
 function tick() {
-    if (segundos === 0) {
-        if (minutos === 0) {
-            clearInterval(timer);
-            isRunning = false;
-            // Aqui você pode adicionar um alarme ou notificação
+    const agora = Date.now(); 
+    let tempoRestanteMs = tempoFim - agora; 
 
-            if (modoAtual === 'pomodoro') {
-                pomodorosConcluidos++;
-                atualizaPomodoros(); // atualiza o número de ciclos concluídos
-                if (pomodorosConcluidos % 4 === 0) { // completou os ciclos de pomodoro, ativa pausa longa
-                    enviarNotificacao('Pomodoro Concluído', 'Hora de fazer uma pausa!');
-                    iniciarModo('pausa-longa');
-                } else {
-                    enviarNotificacao('Pomodoro Concluído', 'Descanse um pouco!');
-                    iniciarModo('pausa-curta'); // ainda não terminou todos os ciclos, ativa pausa curta
-                }
+    if (tempoRestanteMs <= 0) { 
+        clearInterval(timer);
+        isRunning = false;
 
-            } else if (modoAtual === 'pausa-curta') {
-                enviarNotificacao('Pausa Curta Concluída', 'Volte ao trabalho!');
-                iniciarModo('pomodoro'); // volta para o modo pomodoro após pausas
-            } else if (modoAtual === 'pausa-longa') {
-                enviarNotificacao('Pausa Longa Concluída', 'Volte ao trabalho!');
-                mostraRony();
-                atualizaPomodoros();
-                iniciarModo('pomodoro'); 
+        // Zera o display quando acabar
+        minutos = 0; 
+        segundos = 0;
+        atualizaDisplay();
+
+        if (modoAtual === 'pomodoro') {
+            pomodorosConcluidos++;
+            atualizaPomodoros(); // atualiza o número de ciclos concluídos
+            if (pomodorosConcluidos % 4 === 0) { // completou os ciclos de pomodoro, ativa pausa longa
+                enviarNotificacao('Pomodoro Concluído', 'Hora de fazer uma pausa!');
+                iniciarModo('pausa-longa');
+            } else {
+                enviarNotificacao('Pomodoro Concluído', 'Descanse um pouco!');
+                iniciarModo('pausa-curta'); // ainda não terminou todos os ciclos, ativa pausa curta
             }
 
-            return;
+        } else if (modoAtual === 'pausa-curta') {
+            enviarNotificacao('Pausa Curta Concluída', 'Volte ao trabalho!');
+            iniciarModo('pomodoro'); // volta para o modo pomodoro após pausas
+        } else if (modoAtual === 'pausa-longa') {
+            enviarNotificacao('Pausa Longa Concluída', 'Volte ao trabalho!');
+            mostraRony();
+            atualizaPomodoros();
+            iniciarModo('pomodoro'); 
         }
-        minutos--;
-        segundos = 59;
-    } else {
-        segundos--;
+
+        return;
     }
+
+    // Calcula minutos e segundos restantes para atualizar o display
+    minutos = Math.floor(tempoRestanteMs / 1000 / 60);
+    segundos = Math.ceil((tempoRestanteMs / 1000) % 60);
+    if (segundos === 60) {
+      segundos = 59;
+    }
+
     atualizaDisplay();
 }
-
 
 // Função para iniciar o modo selecionado
 function iniciarModo(modo) {
@@ -114,27 +118,44 @@ function iniciarModo(modo) {
     atualizaDisplay();
 
     clearInterval(timer); // Limpa o timer anterior, se houver
-    tick(); 
 
-    timer = setInterval(tick, 100);
+    tempoFim = Date.now() + minutos * 60 * 1000 + segundos * 1000;
+
+    tick(); // chama uma vez imediatamente para atualizar display
+
+    timer = setInterval(tick, 1000);
+
     isRunning = true;
     atualizarBotaoPausaPlay(isRunning);
 }
-
 
 // Evento do botão Iniciar/Pausar
 botaoIniciaPausa.addEventListener('click', () => {
     if (isRunning) { // pausa
         clearInterval(timer);
         isRunning = false;
+
+        // Atualiza o tempo restante baseado no tempoFim e o tempo atual,
+        // para pausar o cronômetro no momento correto
+        const agora = Date.now();
+        let tempoRestanteMs = tempoFim - agora; 
+
+        // Atualiza minutos e segundos para a pausa correta
+        minutos = Math.floor(tempoRestanteMs / 1000 / 60);
+        segundos = Math.floor((tempoRestanteMs / 1000) % 60); 
+
         atualizarBotaoPausaPlay(isRunning);
-    } else { // inicia
-        timer = setInterval(tick, 100);
+    } else { // inicia ou retoma
+
+        // Ajusta tempoFim para continuar do ponto onde parou
+        tempoFim = Date.now() + minutos * 60 * 1000 + segundos * 1000; 
+
+        tick();
+        timer = setInterval(tick, 1000);
         isRunning = true;
         atualizarBotaoPausaPlay(isRunning);
     }
 });
-
 
 // Eventos para os botões de modo
 botoesModo.forEach(botao => {
@@ -162,7 +183,6 @@ botoesModo.forEach(botao => {
         atualizaDisplay();
     });
 });
-
 
 // Evento para aplicar configurações
 botaoAplicarConfig.addEventListener('click', () => {
@@ -198,7 +218,6 @@ botaoAplicarConfig.addEventListener('click', () => {
     isRunning = false;
     atualizarBotaoPausaPlay(isRunning);
 });
-
 
 // Evento para reiniciar configurações (descarta valores do usuário e volta aos valores padrões iniciais)
 botaoReiniciarConfig.addEventListener('click', () => {
@@ -242,7 +261,6 @@ botaoReiniciarConfig.addEventListener('click', () => {
     atualizarBotaoPausaPlay(isRunning);
 });
 
-
 // Atualiza o texto de ciclos
 function atualizaPomodoros() {
     const pomodoros = document.getElementById('pomodoros');
@@ -251,7 +269,6 @@ function atualizaPomodoros() {
         pomodorosConcluidos = 0;
     }
 }
-
 
 // Atualiza o texto do modo atual
 function atualizaMensagemModo() {
@@ -269,7 +286,6 @@ function atualizaMensagemModo() {
     }
 }
 
-
 // Atualiza o ícone do botão de pausa/play
 function atualizarBotaoPausaPlay(emExecucao) {
     if (emExecucao) {
@@ -281,7 +297,6 @@ function atualizarBotaoPausaPlay(emExecucao) {
     }
     
 }
-
 
 // Verifica se o navegador suporta notificações e solicita permissão
 function pedirPermissaoNotificacao() {
@@ -301,7 +316,6 @@ function pedirPermissaoNotificacao() {
     }
 }
   
-
 // Envia notificação no navegador
 function enviarNotificacao(titulo, mensagem) {
     if (Notification.permission === "granted") {
@@ -316,8 +330,6 @@ function enviarNotificacao(titulo, mensagem) {
     }
 }
 
-
-
 // Easter egg do site. Mostra o Rony após completar a pausa longa
 function mostraRony() {
     const divRony = document.getElementById('mostra-rony');
@@ -330,11 +342,8 @@ function mostraRony() {
 
 }
 
-
 // Inicializar display
 atualizaDisplay();
 
-
 // Carregar configurações do localStorage
 pedirPermissaoNotificacao();
-
