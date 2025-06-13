@@ -112,7 +112,7 @@ function iniciarModo(modo) {
     clearInterval(timer); // Limpa o timer anterior, se houver
     tick(); 
 
-    timer = setInterval(tick, 100);
+    timer = setInterval(tick, 1000);
     isRunning = true;
     atualizarBotaoPausaPlay(isRunning);
 }
@@ -125,7 +125,7 @@ botaoIniciaPausa.addEventListener('click', () => {
         isRunning = false;
         atualizarBotaoPausaPlay(isRunning);
     } else { // inicia
-        timer = setInterval(tick, 100);
+        timer = setInterval(tick, 1000);
         isRunning = true;
         atualizarBotaoPausaPlay(isRunning);
     }
