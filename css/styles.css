@@ -1,8 +1,8 @@
 h1 {
     position: relative;
     top: 0;
-    font-size: 2.5em;
-    color: #4CAF50;
+    font-size: 4em;
+    color: #d7fcd2;
     margin: 1rem 0;
     text-align: center;
     width: 100%; 
@@ -11,7 +11,7 @@ h1 {
 
 
 body {
-    background: #e1e1e1; 
+    background: #52ae1c; 
     font-family: Arial, Helvetica, sans-serif;
     color: #333;
     height: 100vh;
@@ -24,10 +24,10 @@ body {
 
 
 main {
-    background: #fff;
+    background: #d7fcd2;
     padding: 2rem;
     border-radius: 10px;
-    box-shadow: 0 4px 10px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px 3px rgba(4, 103, 4, 0.612);
     text-align: center;
     max-width: 800px;
     width: 100%;
@@ -56,7 +56,6 @@ main {
     color: #4CAF50;            
     font-weight: bold;         
     margin: 0.5rem 0;   
-
 }
 
 
@@ -99,7 +98,6 @@ button:hover {
 }
 
 
-
 #botoes {
     display: flex;
     justify-content: center;
@@ -110,7 +108,13 @@ button:hover {
 
 #botoes button {
     flex: 1;
+    color: #d7fcd2;
     max-width: 120px;
+}
+
+
+#inicia-pausa {
+    color: #d7fcd2;
 }
 
 
@@ -167,7 +171,25 @@ button:hover {
     margin-bottom: 5px;
 }
 
+
 .botao {
     white-space: nowrap;
     word-break: keep-all;
+}
+
+
+#mostra-rony {
+    display: none; /* por padrão, não mostra a div */
+    margin-top: 1rem;
+    text-align: center;
+}
+
+
+#rony {
+    display: block;
+    margin: 1rem auto 0 auto;
+    margin-bottom: 2rem;
+    width: 800px;
+    height: 150px;
+    
 }

@@ -64,7 +64,7 @@ function tick() {
 
             if (modoAtual === 'pomodoro') {
                 pomodorosConcluidos++;
-                atualizaPomodoros(); // Atualiza o número de ciclos concluídos
+                atualizaPomodoros(); // atualiza o número de ciclos concluídos
                 if (pomodorosConcluidos % 4 === 0) { // completou os ciclos de pomodoro, ativa pausa longa
                     iniciarModo('pausa-longa');
                 } else {
@@ -74,6 +74,7 @@ function tick() {
             } else if (modoAtual === 'pausa-curta') {
                 iniciarModo('pomodoro'); // volta para o modo pomodoro após pausas
             } else if (modoAtual === 'pausa-longa') {
+                mostraRony();
                 atualizaPomodoros();
                 iniciarModo('pomodoro'); 
             }
@@ -275,6 +276,19 @@ function atualizarBotaoPausaPlay(emExecucao) {
         icone.classList.add("fa-play");
     }
     
+}
+
+
+// Easter egg do site. Mostra o Rony após completar a pausa longa
+function mostraRony() {
+    const divRony = document.getElementById('mostra-rony');
+    if (!divRony) return;
+  
+    divRony.style.display = 'block'; // mostra a div
+    setTimeout(() => {
+      divRony.style.display = 'none'; // oculta depois de 0,2 segundos
+    }, 200); // 200ms = 0,2 segundos
+
 }
 
 
