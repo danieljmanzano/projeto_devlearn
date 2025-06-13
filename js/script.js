@@ -66,14 +66,18 @@ function tick() {
                 pomodorosConcluidos++;
                 atualizaPomodoros(); // atualiza o número de ciclos concluídos
                 if (pomodorosConcluidos % 4 === 0) { // completou os ciclos de pomodoro, ativa pausa longa
+                    enviarNotificacao('Pomodoro Concluído', 'Hora de fazer uma pausa!');
                     iniciarModo('pausa-longa');
                 } else {
+                    enviarNotificacao('Pomodoro Concluído', 'Descanse um pouco!');
                     iniciarModo('pausa-curta'); // ainda não terminou todos os ciclos, ativa pausa curta
                 }
 
             } else if (modoAtual === 'pausa-curta') {
+                enviarNotificacao('Pausa Curta Concluída', 'Volte ao trabalho!');
                 iniciarModo('pomodoro'); // volta para o modo pomodoro após pausas
             } else if (modoAtual === 'pausa-longa') {
+                enviarNotificacao('Pausa Longa Concluída', 'Volte ao trabalho!');
                 mostraRony();
                 atualizaPomodoros();
                 iniciarModo('pomodoro'); 
@@ -112,7 +116,7 @@ function iniciarModo(modo) {
     clearInterval(timer); // Limpa o timer anterior, se houver
     tick(); 
 
-    timer = setInterval(tick, 1000);
+    timer = setInterval(tick, 100);
     isRunning = true;
     atualizarBotaoPausaPlay(isRunning);
 }
@@ -125,7 +129,7 @@ botaoIniciaPausa.addEventListener('click', () => {
         isRunning = false;
         atualizarBotaoPausaPlay(isRunning);
     } else { // inicia
-        timer = setInterval(tick, 1000);
+        timer = setInterval(tick, 100);
         isRunning = true;
         atualizarBotaoPausaPlay(isRunning);
     }
@@ -279,6 +283,41 @@ function atualizarBotaoPausaPlay(emExecucao) {
 }
 
 
+// Verifica se o navegador suporta notificações e solicita permissão
+function pedirPermissaoNotificacao() {
+    if (!("Notification" in window)) {
+        alert("Este navegador não suporta notificações.");
+        return;
+    }
+
+    if (Notification.permission === "default") {
+        Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+            console.log("Permissão para notificações concedida!");
+        } else {
+            console.log("Permissão para notificações negada.");
+        }
+        });
+    }
+}
+  
+
+// Envia notificação no navegador
+function enviarNotificacao(titulo, mensagem) {
+    if (Notification.permission === "granted") {
+        const notificacao = new Notification(titulo, {
+        body: mensagem,
+        icon: "img/rony_feio.png" 
+        });
+
+        setTimeout(() => { // fecha a notificação após 4 segundos
+        notificacao.close();
+        }, 2000);
+    }
+}
+
+
+
 // Easter egg do site. Mostra o Rony após completar a pausa longa
 function mostraRony() {
     const divRony = document.getElementById('mostra-rony');
@@ -294,4 +333,8 @@ function mostraRony() {
 
 // Inicializar display
 atualizaDisplay();
+
+
+// Carregar configurações do localStorage
+pedirPermissaoNotificacao();
 
