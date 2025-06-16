@@ -1,4 +1,4 @@
-h1 {
+h1 { /* título */
     position: relative;
     top: 0;
     font-size: 4em;
@@ -19,7 +19,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin: 0; /* Remove margens padrão */
+    margin: 0; /* remove margens padrão */
 }
 
 
