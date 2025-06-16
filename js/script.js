@@ -345,5 +345,5 @@ function mostraRony() {
 // Inicializar display
 atualizaDisplay();
 
-// Carregar configurações do localStorage
+
 pedirPermissaoNotificacao();
